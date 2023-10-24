@@ -27,6 +27,9 @@ spaghetti without dying from hunger.*
 ## Study resources
 - [Theory](https://medium.com/science-journal/the-dining-philosophers-problem-fded861c37ed)
 - [Philosophers guide](https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2)
+  - [Introduction to Threads](https://www.youtube.com/watch?v=LOfGJcVnvAk)
+  - [Introduction to Threads](https://www.youtube.com/watch?v=ldJ8WGZVXZk)
+---
 - [Philosopher tutorial](https://github.com/Alexvc23/philosophers)
 - [Philosopher tutorial](https://medium.com/swlh/the-dining-philosophers-problem-solution-in-c-90e2593f64e8)
 - [Philosophers guide](https://github.com/TommyJD93/Philosophers)
