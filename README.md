@@ -38,6 +38,7 @@ spaghetti without dying from hunger.*
 - **Video** [Dining Philosophers Project.](https://youtu.be/UGQsvVKwe90?si=PcP2DMXtxuIrXfsa)
 - **Video** [A Simple Guide](https://youtu.be/Dt51GebwNR0?si=TJT1vz3Vmxwd4KJi)
 - **Codevault** [Short intro to threads](https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2&pp=iAQB)
+  - [Site](https://code-vault.net/course/6q6s9eerd0:1609007479575)
 - **Codevault** [The fork() function in C](https://www.youtube.com/watch?v=cex9XrZCU14&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&pp=iAQB)
 
 ## Tools
