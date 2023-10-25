@@ -1,8 +1,244 @@
 # Notes
 
 ## Threads
+
 ***A thread is a basic unit of CPU utilization***\
 (*Um thread é uma unidade básica de utilização da CPU*)
+
+## CodeVault
+
+### 1. Short introduction to threads (pthreads)
+
+*For compile: `cc -g -pthread file.c -o file`*
+
+```c
+// Includes
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <pthread.h> // for use threads
+```
+
+```c
+void* routine() {
+    printf("Hello from threads\n");
+    sleep(3);
+    printf("Ending thread\n");
+}
+
+int main(int argc, char* argv[]) {  
+    pthread_t p1, p2; // Create a variable type thread_t, this take a pointer 
+    if (pthread_create(&p1, NULL, &routine, NULL) != 0) { // Create a thread
+        return 1;
+    }
+    if (pthread_create(&p2, NULL, &routine, NULL) != 0) {
+        return 2;
+    }
+    if (pthread_join(p1, NULL) != 0) { // Make calling thread wait for termination of the thread
+        return 3;
+    }
+    if (pthread_join(p2, NULL) != 0) {
+        return 4;
+    }
+    return 0;
+}
+```
+
+### 2. Difference between processes and threads
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+```
+- main-threads.c
+```c 
+int x = 2;
+
+void* routine() {
+    x += 5;
+    sleep(2);
+    printf("Value of x: %d\n", x);
+}
+
+void* routine2() {
+    sleep(2);
+    printf("Value of x: %d\n", x);
+}
+
+int main(int argc, char* argv[]) {
+    pthread_t t1, t2;
+    if (pthread_create(&t1, NULL, &routine, NULL)) {
+        return 1;
+    }
+    if (pthread_create(&t2, NULL, &routine2, NULL)) {
+        return 2;
+    }
+    if (pthread_join(t1, NULL)) {
+        return 3;
+    }
+    if (pthread_join(t2, NULL)) {
+        return 3;
+    }
+    return 0;
+    // output:
+    // Value of x: 5 
+    // Value of x: 5 
+}
+```
+- main-processes.c
+```c
+int main(int argc, char* argv[]) {
+    int x = 2;
+    int pid = fork();
+    if (pid == -1) {
+        return 1;
+    }
+    
+    if (pid == 0) {
+        x++;
+    }
+    sleep(2);
+    printf("Value of x: %d\n", x);
+    if (pid != 0) {
+        wait(NULL);
+    }
+    return 0;
+    // output:
+    // Value of x: 2 
+    // Value of x: 3
+}
+```
+
+### 2. [What are Race Conditions?](https://youtu.be/FY9livorrJI)
+
+Race conditions, ou "condições de corrida", são situações problemáticas que\
+podem ocorrer em programas de computador concorrentes ou paralelos.\
+Essas condições ocorrem quando múltiplas threads ou processos acessam recursos\
+compartilhados simultaneamente e, em alguns casos, de forma não coordenada,\
+o que pode levar a resultados inesperados ou incorretos. As race conditions\
+são um tipo de problema de concorrência.
+
+*Aqui estão alguns cenários comuns que podem levar a race conditions:*
+
+1. **Leitura/Gravação Concorrente:** Quando várias threads ou processos tentam ler\
+e escrever no mesmo recurso compartilhado ao mesmo tempo, isso pode resultar em\
+valores incorretos. Por exemplo, se uma thread estiver lendo um valor enquanto\
+outra o modifica, a leitura pode retornar um valor inconsistente.
+
+2. **Escrita/Gravação Concorrente:** Se várias threads ou processos estão gravando\
+em um recurso compartilhado simultaneamente, podem ocorrer problemas de integridade\
+dos dados. As informações podem ser sobrepostas ou perdidas.
+
+3. **Acesso a Variáveis Compartilhadas:** Quando múltiplas threads ou processos\
+acessam variáveis compartilhadas sem proteção adequada, como locks ou semáforos,\
+as atualizações concorrentes podem causar corrupção de dados.
+
+Para evitar race conditions, programadores devem adotar práticas de programação\
+concorrente segura, como a utilização de mutexes (locks) para proteger o acesso\
+a recursos compartilhados, sincronização adequada entre threads e processos e o\
+uso de estruturas de dados thread-safe. A prevenção de race conditions é\
+fundamental para garantir a integridade dos dados e o funcionamento correto\
+de sistemas concorrentes.
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+
+int mails = 0;
+
+void* routine() {
+    for (int i = 0; i < 1000000; i++) {
+        mails++;
+        // read mails
+        // increment
+        // write mails
+    }
+}
+
+int main(int argc, char* argv[]) {
+    pthread_t p1, p2, p3, p4;
+    if (pthread_create(&p1, NULL, &routine, NULL) != 0) {
+        return 1;
+    }
+    if (pthread_create(&p2, NULL, &routine, NULL) != 0) {
+        return 2;
+    }
+    if (pthread_join(p1, NULL) != 0) {
+        return 3;
+    }
+    if (pthread_join(p2, NULL) != 0) {
+        return 4;
+    }
+    printf("Number of mails: %d\n", mails);
+    // Output:
+    // for 100000: Number of mails: 1025267
+    // for 100: Number of mails: 200
+    return 0;
+}
+```
+
+### 3. [What is a mutex in C?](pthread_mutex)(https://youtu.be/oq29KUy29iQ)
+- **mutex** e uma especie de bloqueio em torno de uma secao de codigo
+- **mutex** basicamente protege outros **threads** que o executam ao mesmo tempo
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+
+int mails = 0;
+pthread_mutex_t mutex; // Antes de usa-lo, temos que inicializa-lo 
+
+void* routine() {
+    for (int i = 0; i < 10000000; i++) {
+        // fct "pthread_mutex_lock: verfica se:
+        // o bloequio esta correto
+        // se esperou ate que o bloqueio seja desbloqueado
+        // defini como um bloqueio quando terminamos de fazer...
+        // tudo o que esta sendo realizao.
+        pthread_mutex_lock(&mutex); 
+        mails++;
+        pthread_mutex_unlock(&mutex); // desbloqueia mutex
+        // read mails
+        // increment
+        // write mails
+    }
+}
+
+int main(int argc, char* argv[]) {
+    pthread_t p1, p2, p3, p4;
+    pthread_mutex_init(&mutex, NULL); // Inicializacao do meu mutex
+    if (pthread_create(&p1, NULL, &routine, NULL) != 0) {
+        return 1;
+    }
+    if (pthread_create(&p2, NULL, &routine, NULL) != 0) {
+        return 2;
+    }
+    if (pthread_create(&p3, NULL, &routine, NULL) != 0) {
+        return 3;
+    }
+    if (pthread_create(&p4, NULL, &routine, NULL) != 0) {
+        return 4;
+    }
+    if (pthread_join(p1, NULL) != 0) {
+        return 5;
+    }
+    if (pthread_join(p2, NULL) != 0) {
+        return 6;
+    }
+    if (pthread_join(p3, NULL) != 0) {
+        return 7;
+    }
+    if (pthread_join(p4, NULL) != 0) {
+        return 8;
+    }
+    pthread_mutex_destroy(&mutex); // Por fim temos que destroir nosso mutex
+    printf("Number of mails: %d\n", mails);
+    return 0;
+}
+```
 
 - [Introduction to Threads](https://www.youtube.com/watch?v=LOfGJcVnvAk)
 - [Slides](https://nesoacademy.org/cs/03-operating-system/ppts/04-threads)
@@ -118,7 +354,7 @@ void *computation(void *add)
 //          |                          |  product = a * b;
 //          ↓                          ↓
 //
-//          Concurrent But Not Parallel Execution 
+//          Concurrent But Not Parallel Execution >
 //
 //
 //
