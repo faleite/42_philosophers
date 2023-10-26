@@ -45,6 +45,14 @@ int main(int argc, char* argv[]) {
 ```
 
 ### 2. Difference between processes and threads
+| Processo | Tópico |
+| --- | --- |
+| Processo significa que um programa inteiro está em execução | Thread significa que um segmento (parte do programa) está em execução |
+| Um programa pode conter vários threads | múltiplos threads fazem parte de um único processo compartilhando o mesmo espaço de memória |
+| Programas consomem mais recursos | Threads consomem menos recursos |
+| Diferentes processos são tratados separadamente pelo SO | Threads são tratados como uma única tarefa pelo sistema operacional com o mesmo ID de processo |
+| Processo são isolados | Threads compartilham memória |
+| Não compartilha dados | Threads compartilham dados entre si |
 ```c
 #include <stdlib.h>
 #include <stdio.h>
@@ -111,7 +119,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-### 2. [What are Race Conditions?](https://youtu.be/FY9livorrJI)
+### 3. [What are Race Conditions?](https://youtu.be/FY9livorrJI)
 
 Race conditions, ou "condições de corrida", são situações problemáticas que\
 podem ocorrer em programas de computador concorrentes ou paralelos.\
@@ -179,7 +187,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-### 3. [What is a mutex in C?](pthread_mutex)(https://youtu.be/oq29KUy29iQ)
+### 4. [What is a mutex in C? (pthread_mutex)](https://youtu.be/oq29KUy29iQ)
 - **mutex** e uma especie de bloqueio em torno de uma secao de codigo
 - **mutex** basicamente protege outros **threads** que o executam ao mesmo tempo
 
@@ -234,11 +242,195 @@ int main(int argc, char* argv[]) {
     if (pthread_join(p4, NULL) != 0) {
         return 8;
     }
-    pthread_mutex_destroy(&mutex); // Por fim temos que destroir nosso mutex
+    pthread_mutex_destroy(&mutex); // Por fim temos que destruir nosso mutex
     printf("Number of mails: %d\n", mails);
     return 0;
 }
 ```
+
+### 5. How to create threads in a loop (pthread_create)
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+
+int mails = 0;
+pthread_mutex_t mutex;
+
+void* routine() {
+    for (int i = 0; i < 10000000; i++) {
+        pthread_mutex_lock(&mutex);
+        mails++;
+        pthread_mutex_unlock(&mutex);
+    }
+}
+
+/*
+* A maneira correta de usar um conjunto de threads em um loop
+* é separar a funçao create da função join em loops dieferentes 
+*/
+int main(int argc, char* argv[]) {
+    pthread_t th[8];
+    int i;
+    pthread_mutex_init(&mutex, NULL);
+    for (i = 0; i < 8; i++) {
+        if (pthread_create(th + i, NULL, &routine, NULL) != 0) {
+            perror("Failed to create thread");
+            return 1;
+        }
+        printf("Thread %d has started\n", i);
+    }
+    for (i = 0; i < 8; i++) {
+        if (pthread_join(th[i], NULL) != 0) {
+            return 2;
+        }
+        printf("Thread %d has finished execution\n", i);
+    }
+    pthread_mutex_destroy(&mutex);
+    printf("Number of mails: %d\n", mails);
+    return 0;
+}
+// Output:
+// Thread 0 has started
+// Thread 1 has started
+// Thread 2 has started
+// Thread 3 has started
+// Thread 4 has started
+// Thread 5 has started
+// Thread 6 has started
+// Thread 7 has started
+// Thread 0 has finished execution
+// Thread 1 has finished execution
+// Thread 2 has finished execution
+// Thread 3 has finished execution
+// Thread 4 has finished execution
+// Thread 5 has finished execution
+// Thread 6 has finished execution
+// Thread 7 has finished execution
+// Number of mails: 80000000
+```
+
+### [6. Get return value from a thread (pthread_join)](https://youtu.be/ln3el6PR__Q?si=ljJo5HWlOtijyJV3)
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <time.h>
+
+void* roll_dice() {
+    int value = (rand() % 6) + 1;
+    int* result = malloc(sizeof(int));
+    *result = value;
+    // printf("%d\n", value);
+    printf("Thread result: %p\n", result);
+    return (void*) result;
+}
+
+int main(int argc, char* argv[]) {
+    int* res;
+    srand(time(NULL));
+    pthread_t th;
+    if (pthread_create(&th, NULL, &roll_dice, NULL) != 0) {
+        return 1;
+    }
+    if (pthread_join(th, (void**) &res) != 0) {
+        return 2;
+    }
+    printf("Main res: %p\n", res);
+    printf("Result: %d\n", *res);
+    free(res);
+    return 0;
+}
+// Output
+// Thread result: 0x7f6ac0000b70
+// Main res: 0x7f6ac0000b70
+// Result: 4
+```
+
+### 7. [How to pass arguments to threads in C](https://youtu.be/HDohXvS6UIk)
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <unistd.h>
+
+int primes[10] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+
+void* routine(void* arg) {
+    sleep(1);
+    int index = *(int*)arg;
+    printf("%d ", primes[index]);
+    free(arg);
+}
+
+int main(int argc, char* argv[]) {
+    pthread_t th[10];
+    int i;
+    for (i = 0; i < 10; i++) {
+        int* a = malloc(sizeof(int));
+        *a = i;
+        if (pthread_create(&th[i], NULL, &routine, a) != 0) {
+            perror("Failed to created thread");
+        }
+    }
+    for (i = 0; i < 10; i++) {
+        if (pthread_join(th[i], NULL) != 0) {
+            perror("Failed to join thread");
+        }
+    }
+    
+    return 0;
+}
+```
+
+### 8. [Practical example for using threads #1 (Summing numbers from an array)](https://youtu.be/Adtrk3PREQI?si=2VNdxtzAsq1DmrQd)
+```C
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <unistd.h>
+
+int primes[10] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+
+void* routine(void* arg) {
+    int index = *(int*)arg;
+    int sum = 0;
+    for (int j = 0; j < 5; j++) {
+        sum += primes[index + j];
+    }
+    printf("Local sum: %d\n", sum);
+    *(int*)arg = sum;
+    return arg;
+}
+
+int main(int argc, char* argv[]) {
+    pthread_t th[2];
+    int i;
+    for (i = 0; i < 2; i++) {
+        int* a = malloc(sizeof(int));
+        *a = i * 5;
+        if (pthread_create(&th[i], NULL, &routine, a) != 0) {
+            perror("Failed to create thread");
+        }
+    }
+    int globalSum = 0;
+    for (i = 0; i < 2; i++) {
+        int* r;
+        if (pthread_join(th[i], (void**) &r) != 0) {
+            perror("Failed to join thread");
+        }
+        globalSum += *r;
+        free(r);
+    }
+    printf("Global sum: %d\n", globalSum);
+    return 0;
+}
+// Output:
+// Local sum: 28
+// Global sum: 129
+// Local sum: 101
+```
+---
 
 - [Introduction to Threads](https://www.youtube.com/watch?v=LOfGJcVnvAk)
 - [Slides](https://nesoacademy.org/cs/03-operating-system/ppts/04-threads)

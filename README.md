@@ -30,8 +30,6 @@ spaghetti without dying from hunger.*
   - [Introduction to Threads](https://www.youtube.com/watch?v=LOfGJcVnvAk)
   - [Introduction to Threads](https://www.youtube.com/watch?v=ldJ8WGZVXZk)
 ---
-- [Philosopher tutorial](https://github.com/Alexvc23/philosophers)
-- [Philosopher tutorial](https://medium.com/swlh/the-dining-philosophers-problem-solution-in-c-90e2593f64e8)
 - [Philosophers guide](https://github.com/TommyJD93/Philosophers)
 - [geeksforgeeks tutorial](https://www.geeksforgeeks.org/dining-philosophers-problem/)
 - [geeksforgeeks tutorial (Using Semaphores)](https://www.geeksforgeeks.org/dining-philosopher-problem-using-semaphores/)

@@ -1,32 +1,40 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
 
-int mails = 0;
+int primes[10] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
 
-void* routine() {
-    for (int i = 0; i < 1000000; i++) {
-        mails++;
-        // read mails
-        // increment
-        // write mails
+void* routine(void* arg) {
+    int index = *(int*)arg;
+    int sum = 0;
+    for (int j = 0; j < 5; j++) {
+        sum += primes[index + j];
     }
+    printf("Local sum: %d\n", sum);
+    *(int*)arg = sum;
+    return arg;
 }
 
 int main(int argc, char* argv[]) {
-    pthread_t p1, p2, p3, p4;
-    if (pthread_create(&p1, NULL, &routine, NULL) != 0) {
-        return 1;
+    pthread_t th[2];
+    int i;
+    for (i = 0; i < 2; i++) {
+        int* a = malloc(sizeof(int));
+        *a = i * 5;
+        if (pthread_create(&th[i], NULL, &routine, a) != 0) {
+            perror("Failed to create thread");
+        }
     }
-    if (pthread_create(&p2, NULL, &routine, NULL) != 0) {
-        return 2;
+    int globalSum = 0;
+    for (i = 0; i < 2; i++) {
+        int* r;
+        if (pthread_join(th[i], (void**) &r) != 0) {
+            perror("Failed to join thread");
+        }
+        globalSum += *r;
+        free(r);
     }
-    if (pthread_join(p1, NULL) != 0) {
-        return 3;
-    }
-    if (pthread_join(p2, NULL) != 0) {
-        return 4;
-    }
-    printf("Number of mails: %d\n", mails);
+    printf("Global sum: %d\n", globalSum);
     return 0;
 }
