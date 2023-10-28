@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/10/28 15:09:26 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/10/28 21:49:13 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,18 @@
 # include <unistd.h> // write, usleep
 # include <sys/time.h> // gettimeofday
 # include <pthread.h> // pthread_create, pthread_detach, pthread_join
+
+typedef struct s_data
+{
+	int			philos;
+	int			forks;
+	int			time_die;
+	int			time_eat;
+	int			time_sleep;
+	int			ntimes_eat;
+	pthread_t	*thread;
+}	t_data;
+
 
 /* Utils */
 int		take_arg(int argc, char **argv);
