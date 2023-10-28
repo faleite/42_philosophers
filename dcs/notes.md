@@ -1,5 +1,40 @@
 # Notes
 
+## The dining Philosophers
+### Scenario:
+- A philosophers needs both fork on his left and right hand to eat, else, he can't.
+
+### Problems:
+- **Deadlock** (impasse) - each of the philosophers pick up a fork, no one can eat, hence, a deadlock.\
+- **Starvation** (inanição - a fome)\
+if a philosofer is not able to eat for a long period of time, the said philosopher may die of starvation.
+
+### Possible Solutions
+#### 1. Resource Hierarchy Solution (by Dijkstra)
+O projeto "philosophers" da escola 42 é um exercício comum em cursos de sistemas operacionais e programação concorrente, projetado para ensinar aos alunos os conceitos de concorrência, threads, exclusão mútua e prevenção de deadlocks. O objetivo principal é simular o problema clássico dos "jantar dos filósofos" usando programação concorrente.
+
+A resolução desse problema envolve a aplicação de uma hierarquia de recursos e a prevenção de deadlocks, conforme proposto por Dijkstra. O problema dos filósofos jantando é um exemplo clássico de um problema de sincronização concorrente, onde filósofos sentam-se à mesa para jantar e, entre cada par de filósofos, há um garfo. Os filósofos devem pegar dois garfos adjacentes para comer.
+
+A hierarquia de recursos proposta por Dijkstra para prevenir deadlocks consiste em definir uma ordem hierárquica pela qual os recursos (garfos, no caso) podem ser adquiridos. Neste caso, os filósofos devem seguir uma ordem específica para pegar os garfos, evitando a criação de um ciclo que possa levar a um deadlock.
+
+A abordagem geral para resolver esse problema é:
+
+1. Cada garfo é associado a um filósofo, e cada garfo é representado por um semáforo ou uma variável de condição que controla o acesso a ele.
+
+2. Os filósofos seguem uma ordem para pegar os garfos, evitando pegar ambos os garfos simultaneamente. Por exemplo, o filósofo 1 pega o garfo à esquerda e, em seguida, o garfo à direita, enquanto o filósofo 2 faz o oposto.
+
+3. Quando um filósofo tenta pegar um garfo que não está disponível (ou seja, já está sendo usado por outro filósofo), ele aguarda até que o garfo esteja disponível.
+
+4. A implementação deve incluir mecanismos de exclusão mútua, como mutexes ou semáforos, para garantir que apenas um filósofo possa pegar um garfo de cada vez.
+
+5. O programa deve ser projetado de forma a permitir que os filósofos liberem os garfos após comer, para que outros filósofos possam usá-los.
+
+A hierarquia de recursos é aplicada estabelecendo uma ordem para pegar os garfos que evite ciclos de espera circular. Essa abordagem previne eficazmente deadlocks, garantindo que os filósofos sigam uma ordem específica para pegar os garfos e que não fiquem presos em um estado de espera indefinida.
+
+A implementação detalhada pode variar dependendo da linguagem de programação, da biblioteca de concorrência utilizada e dos recursos disponíveis, mas a ideia geral é seguir os princípios da hierarquia de recursos de Dijkstra para evitar deadlocks no problema dos filósofos jantando.
+#### 2. Arbitrator Solution
+#### 3. Chandy/Misra Solution
+
 ## Threads
 
 ***A thread is a basic unit of CPU utilization***\
