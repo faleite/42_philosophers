@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/10/28 21:49:13 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/10/29 16:35:56 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_data
 	int			time_eat;
 	int			time_sleep;
 	int			ntimes_eat;
-	pthread_t	*thread;
+	pthread_t	thread[];
 }	t_data;
 
 
@@ -37,7 +37,5 @@ int		take_arg(int argc, char **argv);
 int		check_arg(char **argv);
 int		ft_isdigit(int c);
 int		ft_atoi(const char *ptr);
-
-
 
 #endif /* PHILO_H */
