@@ -7,8 +7,14 @@ NAME		= philo
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g -pthread# -fsanitize=address
 RM			= rm -f
-FILES 		= $(wildcard src/*.c)
+FILES 		= ./src/main.c \
+				./src/take_arg.c \
+				./src/utils.c
+#$(wildcard src/*.c)
 OBJS		= $(FILES:.c=.o)
+
+# .c.o:
+#  		@$(CC) -c $< -o $@
 
 ################################################################################
 #                                 COLORS                                       #
@@ -48,5 +54,7 @@ re: fclean all
 
 v:
 	make re && clear && valgrind --leak-check=full --show-leak-kinds=all ./philo 5 800 200 200 7
+h:
+	valgrind --tool=helgrind ./philo # time threads
 
 .PHONY: all clean fclean re

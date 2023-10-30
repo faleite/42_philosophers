@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/10/29 16:35:56 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/10/30 21:08:34 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <sys/time.h> // gettimeofday
 # include <pthread.h> // pthread_create, pthread_detach, pthread_join
 
+/* create struct philo */
+;
+
 typedef struct s_data
 {
 	int			philos;
@@ -28,9 +31,13 @@ typedef struct s_data
 	int			time_eat;
 	int			time_sleep;
 	int			ntimes_eat;
-	pthread_t	thread[];
 }	t_data;
 
+typedef struct s_philo
+{
+	pthread_t	thread;
+	t_data		*data;
+}	t_philo;
 
 /* Utils */
 int		take_arg(int argc, char **argv);
