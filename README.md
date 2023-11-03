@@ -41,6 +41,7 @@ spaghetti without dying from hunger.*
 - **Codevault** [The fork() function in C](https://www.youtube.com/watch?v=cex9XrZCU14&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY&pp=iAQB)
 
 ## Tools
+- [Philosophers visualizer](https://nafuka11.github.io/philosophers-visualizer/)
 - [SCXML-tutorial](https://alexzhornyak.github.io/SCXML-tutorial/Examples/Qt/DiningPhilosophers/)
 
 [↑ Index ↑](#top)
