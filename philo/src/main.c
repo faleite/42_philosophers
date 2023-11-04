@@ -6,22 +6,11 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:07:26 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/10/30 21:47:03 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:24:08 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-void	put_arg(t_data *data, int argc, char **argv)
-{
-	data->philos = ft_atoi(argv[1]);
-	data->forks = ft_atoi(argv[1]);
-	data->time_die = ft_atoi(argv[2]);
-	data->time_eat = ft_atoi(argv[3]);
-	data->time_sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-		data->ntimes_eat = ft_atoi(argv[5]);
-}
 
 void	*routine(void *arg)
 {
@@ -31,12 +20,12 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-int	create_threads(t_data *data, t_philo *philo)
+int	create_threads(t_philo *philo)
 {
 	int	i;
 
 	i = -1;
-	while (++i < data->philos)
+	while (++i < philo->data->nphilos)
 	{
 		if (pthread_create(&philo[i].thread, NULL, &routine, NULL) != 0) // routine sem &
 			return (1);
@@ -44,12 +33,12 @@ int	create_threads(t_data *data, t_philo *philo)
 	return (0);
 }
 
-int	join_threads(t_data *data, t_philo *philo)
+int	join_threads(t_philo *philo)
 {
 	int	i;
 
 	i = -1;
-	while (++i < data->philos)
+	while (++i < philo->data->nphilos)
 	{
 		if (pthread_join(philo[i].thread, NULL) != 0)
 			return (1);
@@ -59,28 +48,18 @@ int	join_threads(t_data *data, t_philo *philo)
 
 int	main(int argc, char *argv[])
 {
-	t_data	*data;
-	t_philo	*philo;
+	t_data	data;
 
-	data = malloc(sizeof(t_data));
-	philo = malloc(sizeof(t_philo) * data->philos);
 	if (take_arg(argc, argv))
-		return (1);
-	put_arg(data, argc, argv);
-	if (create_threads(data, philo))
-		return (1);
-	if (join_threads(data, philo))
-		return (1);
+		return (error_case(&data, 1));
+	if (put_arg(&data, argv))
+		return (error_case(&data, 2));
+	if (init_data(&data))
+		return (error_case(&data, 3));
+	// philo = malloc(sizeof(t_philo) * data->nphilos);
+	// if (create_threads(philo))
+		// return (3);
+	// if (join_threads(philo))
+		// return (4);
 	return (0);
 }
-
-// void	init_philo(t_data *data)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < data->philos)
-// 	{
-		
-// 	}
-// }

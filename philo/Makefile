@@ -7,10 +7,7 @@ NAME		= philo
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g -pthread# -fsanitize=address
 RM			= rm -f
-FILES 		= ./src/main.c \
-				./src/take_arg.c \
-				./src/utils.c
-#$(wildcard src/*.c)
+FILES 		= $(wildcard src/*.c)
 OBJS		= $(FILES:.c=.o)
 
 # .c.o:

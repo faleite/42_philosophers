@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/04 09:12:05 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/04 20:26:18 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,21 @@
 # include <stdbool.h> // type bool
 # include <limits.h> // INT_MAX
 # include <string.h> // memset
+# include <errno.h> // macro status errors for threads 
+
+/* Operation code */
+typedef enum e_operator
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETACH,
+}			t_operator;
 
 /* structures */
-
 typedef struct s_data	t_data;
 
 /**
@@ -56,8 +68,7 @@ typedef struct s_philo
 /**
  * @name DATA
  * @brief ./philo 5 800 200 200 [5]
- * @param philos 5
- * @param forks 5
+ * @param nphilos 5
  * @param time_die 800
  * @param time_eat 200
  * @param time_sleep 200
@@ -69,8 +80,7 @@ typedef struct s_philo
 */
 struct s_data
 {
-	int			philos;
-	int			forks;
+	int			nphilos;
 	int			time_die;
 	int			time_eat;
 	int			time_sleep;
@@ -81,10 +91,23 @@ struct s_data
 	t_philo		*philos;
 };
 
+/* Take Arguments */
+int			take_arg(int argc, char **argv);
+int			check_arg(char **argv);
+
 /* Utils */
-int		take_arg(int argc, char **argv);
-int		check_arg(char **argv);
-int		ft_isdigit(int c);
-int		ft_atoi(const char *ptr);
+int			ft_isdigit(int c);
+int			check_int_max(char **argv);
+long int	ft_atol(const char *str);
+
+/* Parsing */
+int			put_arg(t_data *data, char **argv);
+int			init_data(t_data *data);
+
+/* Safe functions */
+int			error_case(t_data *data, int ret);
+int			use_fork(pthread_mutex_t *mutex, t_operator op);
+int			use_thread(pthread_t *thread, void *(*foo)(void *), \
+			void *data, t_operator op);
 
 #endif /* PHILO_H */
