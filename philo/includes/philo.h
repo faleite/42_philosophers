@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/03 21:54:17 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/04 09:12:05 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h> // write, usleep
 # include <sys/time.h> // gettimeofday
 # include <pthread.h> // pthread_create, pthread_detach, pthread_join
-# include <stdbool.h>
+# include <stdbool.h> // type bool
 # include <limits.h> // INT_MAX
 # include <string.h> // memset
 
@@ -27,7 +27,7 @@
 typedef struct s_data	t_data;
 
 /**
- * @name FORK
+ * @brief FORK
 */
 typedef struct s_fork
 {

@@ -1,5 +1,19 @@
 # Notes
 
+## Escopo
+
+### O que faz quando:
+- Comem: Usando a **thread**
+- Pensam: Em espera (não faz nada)
+- Dormem: sleep()
+
+*O que é fork?*  --> **mutex**
+
+### Fluxo do projeto
+**pensar->comer->dormir->pensar**
+1. Todos os **philos** começam a pensar
+2. Se estão a pensar podem **comer**
+
 ## The dining Philosophers
 ### Scenario:
 - A philosophers needs both fork on his left and right hand to eat, else, he can't.
