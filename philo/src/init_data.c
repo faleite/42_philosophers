@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/04 19:55:57 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/05 08:56:01 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	catch_forks(t_philo *philo, t_fork *forks, int pos)
 	num_philos = philo->data->nphilos;
 	philo->left_fork = &forks[(pos + 1) % num_philos];
 	philo->right_fork = &forks[pos];
-	if (philo->id % 2)
+	if (!(philo->id % 2))
 	{
 		philo->left_fork = &forks[pos];
 		philo->right_fork = &forks[(pos + 1) % num_philos];
@@ -66,8 +66,8 @@ static void	init_philo(t_data *data)
 	{
 		philo = data->philos + pos;
 		philo->id = pos + 1;
-		philo->meals_max = false;
 		philo->meals_nbr = 0;
+		philo->meals_max = false;
 		philo->data = data;
 		pos++;
 	}
