@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/04 20:26:18 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:08:17 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,17 @@ typedef struct s_philo
 */
 struct s_data
 {
-	int			nphilos;
-	int			time_die;
-	int			time_eat;
-	int			time_sleep;
-	int			ntimes_eat;
-	int			init_philos;
-	bool		end_philos;
-	t_fork		*forks;
-	t_philo		*philos;
+	int				nphilos;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				ntimes_eat;
+	int				init_philos;
+	bool			end_philos;
+	bool			start_philos;
+	pthread_mutex_t	*mutex;
+	t_fork			*forks;
+	t_philo			*philos;
 };
 
 /* Take Arguments */

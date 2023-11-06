@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/05 08:56:01 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/06 21:08:27 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ int	put_arg(t_data *data, char **argv)
 
 /**
  * @brief How the philo take the forks
- * @param LEFT_FORK = [philo_position + 1] % nphilo 
+ * @param LEFT_FORK = [philo_position + 1] % nphilo
+ * // static void
 */
-static void	catch_forks(t_philo *philo, t_fork *forks, int pos)
+void	catch_forks(t_philo *philo, t_fork *forks, int pos)
 {
 	int	num_philos;
 
@@ -55,8 +56,9 @@ static void	catch_forks(t_philo *philo, t_fork *forks, int pos)
 
 /**
  * @param pos position in the table
+ * // static void
 */
-static void	init_philo(t_data *data)
+void	init_philo(t_data *data)
 {
 	int		pos;
 	t_philo	*philo;
@@ -84,7 +86,9 @@ int	init_data(t_data *data)
 
 	i = 0;
 	data->end_philos = false;
+	data->start_philos = false;
 	data->philos = malloc(sizeof(t_philo) * data->nphilos);
+	use_fork(data->mutex, INIT);
 	if (!(data->philos))
 		return (1);
 	data->forks = malloc(sizeof(t_fork) * data->nphilos);
