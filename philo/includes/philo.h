@@ -6,7 +6,7 @@
 /*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/06 21:08:17 by leite            ###   ########.fr       */
+/*   Updated: 2023/11/07 21:30:14 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_philo
 {
 	int			id;
 	long		meals_nbr;
-	bool		meals_max;
 	long		meals_last;
 	pthread_t	thread;
 	t_fork		*left_fork;
@@ -95,10 +94,8 @@ struct s_data
 
 /* Take Arguments */
 int			take_arg(int argc, char **argv);
-int			check_arg(char **argv);
 
 /* Utils */
-int			ft_isdigit(int c);
 int			check_int_max(char **argv);
 long int	ft_atol(const char *str);
 
@@ -107,7 +104,7 @@ int			put_arg(t_data *data, char **argv);
 int			init_data(t_data *data);
 
 /* Safe functions */
-int			error_case(t_data *data, int ret);
+int			error_case(t_data *data, char *msg);
 int			use_fork(pthread_mutex_t *mutex, t_operator op);
 int			use_thread(pthread_t *thread, void *(*foo)(void *), \
 			void *data, t_operator op);

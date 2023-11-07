@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:07:26 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/04 20:24:08 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:59:44 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	*routine(void *arg)
 {
 	(void)arg;
 	printf("Hello from threads\n");
-
 	return (NULL);
 }
 
@@ -51,11 +50,11 @@ int	main(int argc, char *argv[])
 	t_data	data;
 
 	if (take_arg(argc, argv))
-		return (error_case(&data, 1));
+		return (error_case(&data, "Invalid arguments"));
 	if (put_arg(&data, argv))
-		return (error_case(&data, 2));
+		return (error_case(&data, "Enter a valid value"));
 	if (init_data(&data))
-		return (error_case(&data, 3));
+		return (error_case(&data, "Init data not done"));
 	// philo = malloc(sizeof(t_philo) * data->nphilos);
 	// if (create_threads(philo))
 		// return (3);

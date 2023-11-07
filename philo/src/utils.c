@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/04 20:29:59 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:54:41 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,11 @@
  * ESRCH
  * No thread with the ID thread could be found.
 */
-int	error_case(t_data *data, int ret)
+int	error_case(t_data *data, char *msg)
 {
-	printf("Error(%d)\n", ret);
-	free(data);
+	printf("Error\n%s\n", msg);
+	if (!(data))
+		free(data);
 	return (1);
 }
 

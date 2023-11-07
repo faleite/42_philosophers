@@ -1,0 +1,48 @@
+compilacao ->  compilar com    gcc -pthread ...
+
+includes   ->  #include <pthread.h>
+
+------------------------------------------------
+------------------pthread_create----------------
+------------------------------------------------
+
+
+void *rotine (void* arg)
+{
+    printf("...");
+}
+
+int main(int argc, char **argv)
+{
+    pthread_t t1;
+
+    pthread_create(&t1, NULL, &rotine, NULL);
+    pthread_join(t1, NULL):
+    return (0);
+}
+
+------------------------------------------------
+---------------pthread_mutex--------------------
+------------------------------------------------
+
+pthread_mutex_t mutex;
+
+void *routine (void* arg)
+{
+    pthread_mutex_lock(&mutex);
+    printf("...");
+    pthread_mutex_unlock(&mutex);
+
+}
+
+int main(int argc, char **argv)
+{
+    pthread_t t1;
+
+    pthread_mutex_init(&mutex, NULL);
+    pthread_create(&t1, NULL, &routine, NULL);
+    pthread_join(t1, NULL):
+    pthread_mutex_destroy(&mutex);
+    return (0);
+}
+

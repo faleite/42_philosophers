@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   take_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:53:30 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/04 13:04:56 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:14:21 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static int	check_arg(char **argv);
 
 int	take_arg(int argc, char **argv)
 {
@@ -21,7 +23,15 @@ int	take_arg(int argc, char **argv)
 	return (0);
 }
 
-int	check_arg(char **argv)
+/**
+ * @return Returns zero if false, non-zero if true   
+*/
+static int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+static int	check_arg(char **argv)
 {
 	int	i;
 	int	j;
@@ -39,14 +49,6 @@ int	check_arg(char **argv)
 		i++;
 	}
 	return (0);
-}
-
-/**
- * @return Returns zero if false, non-zero if true   
-*/
-int	ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
 }
 
 long int	ft_atol(const char *str)
@@ -77,7 +79,7 @@ int	check_int_max(char **argv)
 {
 	int	i;
 
-	i = 0;
+	i = 2;
 	while (argv && argv[i])
 	{
 		if (ft_atol(argv[i]) > INT_MAX)

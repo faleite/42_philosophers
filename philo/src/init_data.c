@@ -6,7 +6,7 @@
 /*   By: leite <leite@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/06 21:08:27 by leite            ###   ########.fr       */
+/*   Updated: 2023/11/07 21:41:43 by leite            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,18 @@ int	put_arg(t_data *data, char **argv)
 	if (check_int_max(argv))
 		return (1);
 	data->nphilos = ft_atol(argv[1]);
-	data->time_die = ft_atol(argv[2]) * 1000;
-	data->time_eat = ft_atol(argv[3]) * 1000;
-	data->time_sleep = ft_atol(argv[4]) * 1000;
-	if (data->time_die < 60000
-		|| data->time_eat < 60000
-		|| data->time_sleep < 60000)
-		return (2);
+	data->time_die = ft_atol(argv[2]); // * 1000 put in function time
+	data->time_eat = ft_atol(argv[3]);
+	data->time_sleep = ft_atol(argv[4]);
 	if (argv[5])
 		data->ntimes_eat = ft_atol(argv[5]);
 	else
 		data->ntimes_eat = -1;
+	if (data->nphilos < 1 || data->nphilos > 200
+		|| data->time_die < 60
+		|| data->time_eat < 60
+		|| data->time_sleep < 60)
+		return (2);
 	return (0);
 }
 
@@ -68,8 +69,7 @@ void	init_philo(t_data *data)
 	{
 		philo = data->philos + pos;
 		philo->id = pos + 1;
-		philo->meals_nbr = 0;
-		philo->meals_max = false;
+		philo->meals_nbr = data->ntimes_eat;
 		philo->data = data;
 		pos++;
 	}
@@ -87,17 +87,18 @@ int	init_data(t_data *data)
 	i = 0;
 	data->end_philos = false;
 	data->start_philos = false;
-	data->philos = malloc(sizeof(t_philo) * data->nphilos);
-	use_fork(data->mutex, INIT);
-	if (!(data->philos))
+	if (use_fork(data->mutex, INIT))
 		return (1);
+	data->philos = malloc(sizeof(t_philo) * data->nphilos);
+	if (!(data->philos))
+		return (2);
 	data->forks = malloc(sizeof(t_fork) * data->nphilos);
 	if (!(data->forks))
-		return (2);
+		return (3);
 	while (i < data->nphilos)
 	{
 		if (use_fork(&data->forks[i].fork, INIT))
-			return (3);
+			return (4);
 		data->forks[i].fork_id = i;
 		i++;
 	}
