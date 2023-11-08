@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 16:52:16 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:40:12 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	init_philo(t_data *data)
 		philo = data->philos + pos;
 		philo->id = pos + 1;
 		philo->meals_nbr = data->ntimes_eat;
+		philo->status = THINK;
 		philo->data = data;
 		pos++;
 	}

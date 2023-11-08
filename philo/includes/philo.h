@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 16:51:36 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/08 21:38:21 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ typedef enum e_operator
 	CREATE,
 	JOIN,
 	DETACH,
+	THINK,
+	EAT,
+	SLEEP
 }			t_operator;
 
 /* structures */
@@ -58,6 +61,7 @@ typedef struct s_philo
 	int			id;
 	long		meals_nbr;
 	long		meals_last;
+	int			status;
 	pthread_t	thread;
 	t_fork		*left_fork;
 	t_fork		*right_fork;
@@ -84,9 +88,9 @@ struct s_data
 	int				time_eat;
 	int				time_sleep;
 	int				ntimes_eat;
-	int				init_philos;
 	bool			end_philos;
 	bool			start_philos;
+	size_t			time_philos;
 	pthread_mutex_t	*mutex;
 	t_fork			*forks;
 	t_philo			*philos;
@@ -108,5 +112,11 @@ int			error_case(t_data *data, char *msg);
 int			use_fork(pthread_mutex_t *mutex, t_operator op);
 int			use_thread(pthread_t *thread, void *(*foo)(void *), \
 			void *data, t_operator op);
+
+/* Actions */
+void		msg_routine(t_philo *philo, char *msg);
+void		philo_eat(t_philo *philo);
+void		philo_think(t_philo *philo);
+void		philo_sleep(t_philo *philo);
 
 #endif /* PHILO_H */
