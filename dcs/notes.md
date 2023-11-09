@@ -615,4 +615,40 @@ void *computation(void *add)
 //
 //          Parallel Execution 
 ```
+
+### Simple test of the philo
+```c
+void	*routine(void *arg)
+{
+	(void)arg;
+	printf("Hello from threads\n");
+	return (NULL);
+}
+
+int	create_threads(t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < philo->data->nphilos)
+	{
+		if (pthread_create(&philo[i].thread, NULL, &routine, NULL) != 0) // routine sem &
+			return (1);
+	}
+	return (0);
+}
+
+int	join_threads(t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < philo->data->nphilos)
+	{
+		if (pthread_join(philo[i].thread, NULL) != 0)
+			return (1);
+	}
+	return (0);
+}
+```
 [↑ Index ↑](#top)

@@ -6,11 +6,32 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 16:52:45 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:42:23 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+
+/*
+int	mutex_error_case(int status, t_operator op)
+{
+	if (status == 0)
+		return (0);
+	if (status == EINVAL && (op == LOCK || op == UNLOCK))
+		return (EINVAL);
+	else if (status == EINVAL && op == INIT)
+		return (EINVAL);
+	else if (status == EDEADLK)
+		return (EDEADLK);
+	else if (status == EPERM)
+		return (EPERM);
+	else if (status == ENOMEM)
+		return (ENOMEM);
+	else if (status == EBUSY)
+		return (EBUSY);
+}
+*/
 
 /**
  * Errors
@@ -104,22 +125,11 @@ int	use_thread(pthread_t *thread, void *(*foo)(void *),
 	return (status);
 }
 
-/*
-int	mutex_error_case(int status, t_operator op)
+size_t	get_curr_time(void)
 {
-	if (status == 0)
-		return (0);
-	if (status == EINVAL && (op == LOCK || op == UNLOCK))
-		return (EINVAL);
-	else if (status == EINVAL && op == INIT)
-		return (EINVAL);
-	else if (status == EDEADLK)
-		return (EDEADLK);
-	else if (status == EPERM)
-		return (EPERM);
-	else if (status == ENOMEM)
-		return (ENOMEM);
-	else if (status == EBUSY)
-		return (EBUSY);
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) != 0)
+		printf("Error\n gettimeofday()\n");
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
-*/

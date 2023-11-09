@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 20:47:53 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 21:36:55 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:01:32 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void	philo_eat(t_philo *philo)
 {
-	// if catch_fork
-	philo->meals_last = get_timestamp();
+	if (catch_forks(philo))
+		return ;
+	philo->meals_last = get_curr_time();
 	philo->status = EAT;
 	philo->meals_nbr--;
 	msg_routine(philo, "is eating");
@@ -41,6 +42,8 @@ void	msg_routine(t_philo *philo, char *msg)
 {
 	size_t	time;
 
-	time = get_timestamp() - philo->data->time_philos;
+	pthread_mutex_lock(philo->data->mutex);
+	time = get_curr_time() - philo->data->time_philos;
 	printf("%ld %d %s\n", time, philo->id, msg);
+	pthread_mutex_unlock(philo->data->mutex);
 }

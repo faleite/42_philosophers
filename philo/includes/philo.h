@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 21:38:21 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/09 21:30:52 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_data	t_data;
 typedef struct s_fork
 {
 	pthread_mutex_t	fork;
-	int				fork_id;
+	int				usable;
 }					t_fork;
 
 /**
@@ -59,12 +59,12 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
+	int			status;
+	int			left_fork;
+	int			right_fork;
 	long		meals_nbr;
 	long		meals_last;
-	int			status;
 	pthread_t	thread;
-	t_fork		*left_fork;
-	t_fork		*right_fork;
 	t_data		*data;
 }				t_philo;
 
@@ -102,6 +102,7 @@ int			take_arg(int argc, char **argv);
 /* Utils */
 int			check_int_max(char **argv);
 long int	ft_atol(const char *str);
+size_t		get_curr_time(void);
 
 /* Parsing */
 int			put_arg(t_data *data, char **argv);

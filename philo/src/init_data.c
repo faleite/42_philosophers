@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 20:40:12 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:24:20 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,20 @@ int	put_arg(t_data *data, char **argv)
  * @param LEFT_FORK = [philo_position + 1] % nphilo
  * // static void
 */
-void	catch_forks(t_philo *philo, t_fork *forks, int pos)
+void	order_forks(t_philo *philo, t_fork *forks, int pos)
 {
 	int	num_philos;
 
 	num_philos = philo->data->nphilos;
-	philo->left_fork = &forks[(pos + 1) % num_philos];
-	philo->right_fork = &forks[pos];
 	if (!(philo->id % 2))
 	{
-		philo->left_fork = &forks[pos];
 		philo->right_fork = &forks[(pos + 1) % num_philos];
+		philo->left_fork = &forks[pos];
+	}
+	else
+	{
+		philo->right_fork = &forks[pos];
+		philo->left_fork = &forks[(pos + 1) % num_philos];
 	}
 }
 
@@ -72,9 +75,9 @@ void	init_philo(t_data *data)
 		philo->meals_nbr = data->ntimes_eat;
 		philo->status = THINK;
 		philo->data = data;
+		order_forks(philo, data->forks, pos);
 		pos++;
 	}
-	catch_forks(philo, data->forks, pos);
 }
 
 /**
@@ -88,18 +91,16 @@ int	init_data(t_data *data)
 	i = 0;
 	data->end_philos = false;
 	data->start_philos = false;
-	if (use_fork(data->mutex, INIT))
-		return (1);
 	data->philos = malloc(sizeof(t_philo) * data->nphilos);
 	if (!(data->philos))
-		return (2);
+		return (1);
 	data->forks = malloc(sizeof(t_fork) * data->nphilos);
 	if (!(data->forks))
-		return (3);
+		return (2);
 	while (i < data->nphilos)
 	{
 		if (use_fork(&data->forks[i].fork, INIT))
-			return (4);
+			return (3);
 		data->forks[i].fork_id = i;
 		i++;
 	}

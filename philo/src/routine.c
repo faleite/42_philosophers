@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:10:50 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/08 21:19:21 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:49:43 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ int	start_meals(t_data *data)
 	int	i;
 
 	i = 0;
-	// if (!data->ntimes_eat) // maybe == -1
-	// 	return (1);
 	if (data->nphilos == 1)
-		return (2); // TODO agarra o garfo ate acabar o tempo (bloquea a thread) ou tentar agarrar os dois garfos ate morrer
+		return (1); // TODO agarra o garfo ate acabar o tempo (bloquea a thread) ou tentar agarrar os dois garfos ate morrer
 	// init mutex p/ msg, meals, threads and forks;
 	if (use_fork(data->mutex, INIT))
-		return (3);
-	data->time_philos = get_timestamp();
+		return (2);
+	data->time_philos = get_curr_time();
 	while (i < data->nphilos)
 		use_thread(&data->philos[i++].id, routine, &data->philos[i], CREATE);
 	i = 0;
@@ -64,5 +62,5 @@ int	start_meals(t_data *data)
 		use_thread(data->philos[i++].id, NULL, NULL, JOIN);
 	// fct destroy all mutex:
 	if (use_fork(data->mutex, DESTROY))
-		return (4);
+		return (3);
 }
