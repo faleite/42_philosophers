@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/09 21:30:52 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/11 19:03:40 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_data	t_data;
 */
 typedef struct s_fork
 {
-	pthread_mutex_t	fork;
+	pthread_mutex_t	mutex;
 	int				usable;
 }					t_fork;
 
@@ -60,8 +60,8 @@ typedef struct s_philo
 {
 	int			id;
 	int			status;
-	int			left_fork;
-	int			right_fork;
+	int			first_fork;
+	int			second_fork;
 	long		meals_nbr;
 	long		meals_last;
 	pthread_t	thread;
@@ -119,5 +119,12 @@ void		msg_routine(t_philo *philo, char *msg);
 void		philo_eat(t_philo *philo);
 void		philo_think(t_philo *philo);
 void		philo_sleep(t_philo *philo);
+void		unlock_forks(t_philo *philo, int value);
+void		give_off_forks(t_philo *philo);
+int			odd_even(t_philo *philo, int first_fork, int second_fork);
+int			not_usable(t_philo *philo, int fork);
+int			give_me_forks(t_philo *philo);
+
+
 
 #endif /* PHILO_H */

@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/11 16:22:45 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/11 18:11:13 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	put_arg(t_data *data, char **argv)
 
 /**
  * @brief How the philo take the forks
- * @param LEFT_FORK = [philo_position + 1] % nphilo
+ * @param second_fork = [philo_position + 1] % nphilo
  * // static void
 */
 void	order_forks(t_philo *philo, t_fork *forks, int pos)
@@ -48,13 +48,13 @@ void	order_forks(t_philo *philo, t_fork *forks, int pos)
 	num_philos = philo->data->nphilos;
 	if (!(philo->id % 2))
 	{
-		philo->right_fork = &forks[(pos + 1) % num_philos];
-		philo->left_fork = &forks[pos];
+		philo->first_fork = &forks[pos];
+		philo->second_fork = &forks[(pos + 1) % num_philos];
 	}
 	else
 	{
-		philo->right_fork = &forks[pos];
-		philo->left_fork = &forks[(pos + 1) % num_philos];
+		philo->first_fork = &forks[(pos + 1) % num_philos];
+		philo->second_fork = &forks[pos];
 	}
 }
 
@@ -82,7 +82,7 @@ void	init_philo(t_data *data)
 
 /**
  * @brief How the philo take the forks
- * @param LEFT_FORK = [philo_position + 1] % nphilo 
+ * @param second_fork = [philo_position + 1] % nphilo 
 */
 int	init_data(t_data *data)
 {
@@ -99,9 +99,9 @@ int	init_data(t_data *data)
 		return (2);
 	while (i < data->nphilos)
 	{
-		if (use_fork(&data->forks[i].fork, INIT))
+		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
 			return (3);
-		data->forks[i].usable = i;
+		data->forks[i].usable = 1;
 		i++;
 	}
 	init_philo(data);

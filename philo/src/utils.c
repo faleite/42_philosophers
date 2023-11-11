@@ -6,32 +6,11 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/09 17:42:23 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/11 19:08:47 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-
-/*
-int	mutex_error_case(int status, t_operator op)
-{
-	if (status == 0)
-		return (0);
-	if (status == EINVAL && (op == LOCK || op == UNLOCK))
-		return (EINVAL);
-	else if (status == EINVAL && op == INIT)
-		return (EINVAL);
-	else if (status == EDEADLK)
-		return (EDEADLK);
-	else if (status == EPERM)
-		return (EPERM);
-	else if (status == ENOMEM)
-		return (ENOMEM);
-	else if (status == EBUSY)
-		return (EBUSY);
-}
-*/
 
 /**
  * Errors
@@ -81,27 +60,22 @@ int	error_case(t_data *data, char *msg)
 	return (1);
 }
 
-/**
- * @brief FOR USE MUTEX
- * @param init
- * @param destroy
- * @param lock
- * @param unlock
-*/
-int	use_fork(pthread_mutex_t *mutex, t_operator op)
+int	not_usable(t_philo *philo, int fork)
 {
-	int	status;
+	pthread_mutex_unlock(&philo->data->forks[fork].mutex);
+	if (philo->status != THINK)
+		msg_routine(philo, "is thinking");
+	philo->status = THINK;
+	return (1);
+}
 
-	status = 0;
-	if (op == LOCK)
-		status += pthread_mutex_lock(mutex);
-	else if (op == UNLOCK)
-		status += pthread_mutex_unlock(mutex);
-	else if (op == INIT)
-		status += pthread_mutex_init(mutex, NULL);
-	else if (op == DESTROY)
-		status += pthread_mutex_destroy(mutex);
-	return (status);
+size_t	get_curr_time(void)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) != 0)
+		printf("Error\n gettimeofday()\n");
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 /**
@@ -123,13 +97,4 @@ int	use_thread(pthread_t *thread, void *(*foo)(void *),
 	else if (op == DETACH)
 		status += pthread_detach(*thread);
 	return (status);
-}
-
-size_t	get_curr_time(void)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) != 0)
-		printf("Error\n gettimeofday()\n");
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
