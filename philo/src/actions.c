@@ -14,7 +14,7 @@
 
 void	philo_eat(t_philo *philo)
 {
-	if (catch_forks(philo))
+	if (give_me_forks(philo))
 		return ;
 	philo->meals_last = get_curr_time();
 	philo->status = EAT;

@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/11 19:03:40 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/11 19:11:56 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,5 @@ void		give_off_forks(t_philo *philo);
 int			odd_even(t_philo *philo, int first_fork, int second_fork);
 int			not_usable(t_philo *philo, int fork);
 int			give_me_forks(t_philo *philo);
-
-
 
 #endif /* PHILO_H */
