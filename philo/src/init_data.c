@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/09 20:24:20 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:22:45 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	init_data(t_data *data)
 	{
 		if (use_fork(&data->forks[i].fork, INIT))
 			return (3);
-		data->forks[i].fork_id = i;
+		data->forks[i].usable = i;
 		i++;
 	}
 	init_philo(data);
