@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:07:26 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 15:22:45 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:41:20 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,19 @@ int	main(int argc, char *argv[])
 	t_data	data;
 	t_philo	*philo;
 
-	philo = NULL;
 	if (take_arg(argc, argv))
 		return (error_case(&data, "Invalid arguments"));
 	if (put_arg(&data, argv))
 		return (error_case(&data, "Enter a valid value"));
-	if (init_data(&data))
-		return (error_case(&data, "Init data not done"));
+	// if (init_data(&data))
+	// 	return (error_case(&data, "Init data not done"));
+	philo = malloc(sizeof(t_philo) * (data.nphilos));
+	if (!(philo))
+		return (1);
+	init_philo(philo, &data);
+	printf("%ld", philo->meals_last);
 	start_meals(&data, philo);
 	free(data.forks);
-	free(data.philos);
+	free(philo);
 	return (0);
 }

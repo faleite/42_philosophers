@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 20:47:53 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 14:46:29 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:11:24 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,12 @@ void	philo_eat(t_philo *philo)
 	if (give_me_forks(philo))
 		return ;
 	// Talvez deva usar um mutex_lock aqui
+	pthread_mutex_lock(&philo->data->mutex_eat);
 	philo->meals_last = get_curr_time();
 	philo->status = EAT;
 	philo->meals_nbr--;
 	// Talvez deva usar um mutex_unlock aqui
+	pthread_mutex_unlock(&philo->data->mutex_eat);
 	msg_routine(philo, "is eating");
 	lifetime_of_philo(philo, philo->data->time_eat);
 	give_off_forks(philo);
@@ -43,16 +45,22 @@ void	philo_think(t_philo *philo)
 int	philo_end(t_philo *philo)
 {
 	// Talvez deva usar um mutex_lock aqui
+	pthread_mutex_lock(&philo->data->mutex_end);
 	if ((get_curr_time() - philo->meals_last) >= philo->data->time_die)
 	{
 		if (!philo->data->end_philo)
 			msg_routine(philo, "died");
 		philo->data->end_philo = true;
 		philo->status = DEAD;
+		pthread_mutex_unlock(&philo->data->mutex_end);
 		return (1);
 	}
 	// Caso use mutex, faça um "else" com o mutex_unlock
-	return (0);
+	else
+	{
+		pthread_mutex_unlock(&philo->data->mutex_end);
+		return (0);
+	}
 }
 
 void	lifetime_of_philo(t_philo *philo, size_t time)

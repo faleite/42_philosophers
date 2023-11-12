@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 14:53:24 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:07:40 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	msg_routine(t_philo *philo, char *msg)
 {
 	size_t	time;
 
-	pthread_mutex_lock(philo->data->mutex);
+	pthread_mutex_lock(&philo->data->mutex_msg);
 	time = get_curr_time() - philo->data->time_philos;
 	printf("%ld %d %s\n", time, philo->id, msg);
-	pthread_mutex_unlock(philo->data->mutex);
+	pthread_mutex_unlock(&philo->data->mutex_msg);
 }
 
 int	error_case(t_data *data, char *msg)

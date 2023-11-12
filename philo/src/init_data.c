@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 15:14:16 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:04:41 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	put_arg(t_data *data, char **argv)
 		data->ntimes_eat = ft_atol(argv[5]);
 	else
 		data->ntimes_eat = -1;
+	data->end_philo = false;
 	if (data->nphilos < 1 || data->nphilos > 200
 		|| data->time_die < 60
 		|| data->time_eat < 60
@@ -40,15 +41,18 @@ int	put_arg(t_data *data, char **argv)
  * @brief How the philo take the forks
  * @param second_fork = [philo_position + 1] % nphilo 
 */
-int	init_data(t_data *data)
+int	init_forks(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	data->end_philo = false;
-	data->start_philos = false; // Nao esta usando ainda
-	data->philos = malloc(sizeof(t_philo) * data->nphilos);
-	if (!(data->philos))
+	// if (pthread_mutex_init(&data->mutex, NULL))
+	// 	return (1);
+	if (pthread_mutex_init(&data->mutex_msg, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->mutex_eat, NULL))
+		return (1);
+	if (pthread_mutex_init(&data->mutex_end, NULL))
 		return (1);
 	data->forks = malloc(sizeof(t_fork) * data->nphilos);
 	if (!(data->forks))
@@ -60,7 +64,6 @@ int	init_data(t_data *data)
 		data->forks[i].usable = 1;
 		i++;
 	}
-	init_philo(data);
 	return (0);
 }
 
@@ -77,11 +80,11 @@ void	order_forks(t_philo *philo)
 	if (!(philo->id % 2))
 	{
 		philo->first_fork = philo->id - 1; // &forks[pos];
-		philo->second_fork = (philo->id) & num_philos; // &forks[(pos + 1) % num_philos];
+		philo->second_fork = (philo->id) % num_philos; // &forks[(pos + 1) % num_philos];
 	}
 	else
 	{
-		philo->first_fork = (philo->id) & num_philos;
+		philo->first_fork = (philo->id) % num_philos;
 		philo->second_fork = philo->id - 1;
 	}
 }
@@ -90,20 +93,21 @@ void	order_forks(t_philo *philo)
  * @param pos position in the table
  * // static void
 */
-void	init_philo(t_data *data)
+void	init_philo(t_philo *philo, t_data *data)
 {
 	int		pos;
-	t_philo	*philo;
 
 	pos = 0;
 	while (pos < data->nphilos)
 	{
-		philo = data->philos + pos;
-		philo->id = pos + 1;
-		philo->meals_nbr = data->ntimes_eat;
-		philo->status = THINK;
-		philo->data = data;
-		order_forks(philo);
+		philo[pos].id = pos + 1;
+		philo[pos].meals_nbr = data->ntimes_eat;
+		philo[pos].status = THINK;
+		philo[pos].data = data;
+		philo[pos].meals_last = get_curr_time();
+		philo[pos].first_fork = philo[pos].id - 1;
+		philo[pos].second_fork = (philo[pos].id) % data->nphilos;
+		//order_forks(philo);
 		pos++;
 	}
 }
