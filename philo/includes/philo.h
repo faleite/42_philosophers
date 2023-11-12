@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 14:27:20 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 15:19:03 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@
 # include <errno.h> // macro status errors for threads 
 
 /* Operation code */
-typedef enum e_operator
+typedef enum e_status
 {
 	THINK,
 	EAT,
 	SLEEP,
 	DEAD
-}			t_operator;
+}			t_status;
 
 /* structures */
 typedef struct s_data	t_data;
@@ -53,11 +53,11 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int			id;
-	int			status;
 	int			first_fork;
 	int			second_fork;
-	long		meals_nbr;
-	long		meals_last;
+	int			meals_nbr;
+	size_t		meals_last;
+	t_status	status;
 	pthread_t	thread;
 	t_data		*data;
 }				t_philo;
@@ -78,7 +78,7 @@ typedef struct s_philo
 struct s_data
 {
 	int				nphilos;
-	int				time_die;
+	size_t			time_die;
 	int				time_eat;
 	int				time_sleep;
 	int				ntimes_eat;
@@ -100,6 +100,8 @@ size_t		get_curr_time(void);
 int			take_arg(int argc, char **argv);
 int			put_arg(t_data *data, char **argv);
 int			init_data(t_data *data);
+void		init_philo(t_data *data);
+void		order_forks(t_philo *philo);
 
 /* Actions */
 void		msg_routine(t_philo *philo, char *msg);
@@ -114,6 +116,6 @@ int			not_usable(t_philo *philo, int fork);
 int			give_me_forks(t_philo *philo);
 int			philo_end(t_philo *philo);
 void		*routine(void *arg);
-void		start_meals(t_data *data);
+void		start_meals(t_data *data, t_philo *philo);
 
 #endif /* PHILO_H */

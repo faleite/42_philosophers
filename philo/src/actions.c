@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 20:47:53 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 13:52:23 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 14:46:29 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	philo_sleep(t_philo *philo)
 
 void	philo_think(t_philo *philo)
 {
-	philo->status == THINK;
+	philo->status = THINK;
 	msg_routine(philo, "is thinking");
 }
 

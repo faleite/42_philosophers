@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:10:50 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 14:31:03 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 15:26:24 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,21 @@ void	*routine(void *arg)
  * every philo start simultaneously
  * 6. join everyone
 */
-void	start_meals(t_data *data)
+void	start_meals(t_data *data, t_philo *philo)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	// init mutex p/ msg, meals, threads and forks;
 	if (init_data(data))
 		return ;
 	data->time_philos = get_curr_time();
-	while (i < data->nphilos)
-		pthread_create(&data->philos[i++].id, NULL, routine, &data->philos[i]);
+	while (i++ < data->nphilos)
+		pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
 	i = 0;
 	while (i < data->nphilos)
 		pthread_join(data->philos[i++].id, NULL);
-	pthread_mutex_destroy(&data->mutex);
+	pthread_mutex_destroy(data->mutex);
 	i = 0;
 	while (i < data->nphilos)
 		pthread_mutex_destroy(&data->forks[i++].mutex);
