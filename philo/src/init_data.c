@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/11 18:11:13 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 13:54:22 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	init_data(t_data *data)
 	int	i;
 
 	i = 0;
-	data->end_philos = false;
-	data->start_philos = false;
+	data->end_philo = false;
+	data->start_philos = false; // Nao esta usando ainda
 	data->philos = malloc(sizeof(t_philo) * data->nphilos);
 	if (!(data->philos))
 		return (1);

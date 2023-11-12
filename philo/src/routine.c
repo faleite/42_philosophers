@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:10:50 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/09 17:49:43 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 14:31:03 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,25 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// ver se e um philo fct para um philo
+	// FCT PARA APENAS UM PHILO 
 	// loop infinito da routine (var dead p se alguem morrer)...
-	// (fct para dead) *sleep(100)
-	if (philo->status == THINK)
-		philo_eat(philo);
-	else if (philo->status == EAT)
-		philo_sleep(philo);
-	else if (philo->status == SLEEP)
-		philo_think(philo);
+	while (philo->meals_nbr != 0)
+	{
+		// mutex_lock
+		if (philo->data->end_philo)
+			// mutex_unlock
+			break ;
+		// mutex_unlock
+		if (philo_end(philo))
+			break ;
+		if (philo->status == THINK)
+			philo_eat(philo);
+		else if (philo->status == EAT)
+			philo_sleep(philo);
+		else if (philo->status == SLEEP)
+			philo_think(philo);
+	}
+	return (NULL);
 }
 
 /**
@@ -44,23 +54,22 @@ void	*routine(void *arg)
  * every philo start simultaneously
  * 6. join everyone
 */
-int	start_meals(t_data *data)
+void	start_meals(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	if (data->nphilos == 1)
-		return (1); // TODO agarra o garfo ate acabar o tempo (bloquea a thread) ou tentar agarrar os dois garfos ate morrer
 	// init mutex p/ msg, meals, threads and forks;
-	if (use_fork(data->mutex, INIT))
-		return (2);
+	if (init_data(data))
+		return ;
 	data->time_philos = get_curr_time();
 	while (i < data->nphilos)
-		use_thread(&data->philos[i++].id, routine, &data->philos[i], CREATE);
+		pthread_create(&data->philos[i++].id, NULL, routine, &data->philos[i]);
 	i = 0;
 	while (i < data->nphilos)
-		use_thread(data->philos[i++].id, NULL, NULL, JOIN);
-	// fct destroy all mutex:
-	if (use_fork(data->mutex, DESTROY))
-		return (3);
+		pthread_join(data->philos[i++].id, NULL);
+	pthread_mutex_destroy(&data->mutex);
+	i = 0;
+	while (i < data->nphilos)
+		pthread_mutex_destroy(&data->forks[i++].mutex);
 }

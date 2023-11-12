@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/11 19:13:14 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/12 14:27:20 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,10 @@
 /* Operation code */
 typedef enum e_operator
 {
-	LOCK,
-	UNLOCK,
-	INIT,
-	DESTROY,
-	CREATE,
-	JOIN,
-	DETACH,
 	THINK,
 	EAT,
-	SLEEP
+	SLEEP,
+	DEAD
 }			t_operator;
 
 /* structures */
@@ -88,7 +82,7 @@ struct s_data
 	int				time_eat;
 	int				time_sleep;
 	int				ntimes_eat;
-	bool			end_philos;
+	bool			end_philo;
 	bool			start_philos;
 	size_t			time_philos;
 	pthread_mutex_t	*mutex;
@@ -96,23 +90,16 @@ struct s_data
 	t_philo			*philos;
 };
 
-/* Take Arguments */
-int			take_arg(int argc, char **argv);
-
 /* Utils */
+int			error_case(t_data *data, char *msg);
 int			check_int_max(char **argv);
 long int	ft_atol(const char *str);
 size_t		get_curr_time(void);
 
 /* Parsing */
+int			take_arg(int argc, char **argv);
 int			put_arg(t_data *data, char **argv);
 int			init_data(t_data *data);
-
-/* Safe functions */
-int			error_case(t_data *data, char *msg);
-int			use_fork(pthread_mutex_t *mutex, t_operator op);
-int			use_thread(pthread_t *thread, void *(*foo)(void *), \
-			void *data, t_operator op);
 
 /* Actions */
 void		msg_routine(t_philo *philo, char *msg);
@@ -121,8 +108,12 @@ void		philo_think(t_philo *philo);
 void		philo_sleep(t_philo *philo);
 void		unlock_forks(t_philo *philo, int value);
 void		give_off_forks(t_philo *philo);
+void		lifetime_of_philo(t_philo *philo, size_t time);
 int			odd_even(t_philo *philo, int first_fork, int second_fork);
 int			not_usable(t_philo *philo, int fork);
 int			give_me_forks(t_philo *philo);
+int			philo_end(t_philo *philo);
+void		*routine(void *arg);
+void		start_meals(t_data *data);
 
 #endif /* PHILO_H */
