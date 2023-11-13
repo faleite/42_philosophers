@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 21:01:08 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 18:15:41 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:53:59 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	give_off_forks(t_philo *philo)
 
 	first = philo->first_fork;
 	second = philo->second_fork;
-	if (!(philo->id % 2))
+	if (philo->id % 2)
 	{
 		pthread_mutex_lock(&philo->data->forks[first].mutex);
 		pthread_mutex_lock(&philo->data->forks[second].mutex);

@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:07:26 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 17:12:30 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 20:02:22 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	main(int argc, char *argv[])
 		return (error_case(&data, "Invalid arguments"));
 	if (put_arg(&data, argv))
 		return (error_case(&data, "Enter a valid value"));
-	// if (init_data(&data))
-	// 	return (error_case(&data, "Init data not done"));
 	philo = malloc(sizeof(t_philo) * (data.nphilos));
 	if (!(philo))
 		return (1);

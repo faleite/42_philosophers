@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 18:09:51 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:14:43 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	msg_routine(t_philo *philo, char *msg)
 int	error_case(t_data *data, char *msg)
 {
 	printf("Error\n%s\n", msg);
-	if (data)
+	if (!data)
 		free(data);
 	return (1);
 }

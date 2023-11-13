@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 19:05:29 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:37:31 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,7 @@ struct s_data
 	bool			end_philo;
 	bool			start_philos;
 	size_t			time_philos;
-	pthread_mutex_t	mutex;
 	pthread_mutex_t	mutex_msg;
-	pthread_mutex_t	mutex_eat;
 	pthread_mutex_t	mutex_end;
 	t_fork			*forks;
 	t_philo			*philo;
@@ -104,7 +102,6 @@ int			take_arg(int argc, char **argv);
 int			put_arg(t_data *data, char **argv);
 int			init_forks(t_data *data);
 void		init_philo(t_philo *philo, t_data *data);
-void		order_forks(t_philo *philo);
 
 /* Actions */
 void		msg_routine(t_philo *philo, char *msg);
