@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 19:04:41 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:02:47 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,16 @@ void	init_philo(t_philo *philo, t_data *data)
 		philo[pos].status = THINK;
 		philo[pos].data = data;
 		philo[pos].meals_last = get_curr_time();
-		philo[pos].first_fork = philo[pos].id - 1;
-		philo[pos].second_fork = (philo[pos].id) % data->nphilos;
+		if (!(philo->id % 2))
+		{
+			philo[pos].first_fork = philo[pos].id - 1;
+			philo[pos].second_fork = (philo[pos].id) % data->nphilos;
+		}
+		else
+		{
+			philo[pos].first_fork = (philo[pos].id) % data->nphilos;
+			philo[pos].second_fork = philo[pos].id - 1;
+		}
 		//order_forks(philo);
 		pos++;
 	}

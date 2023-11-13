@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:07:26 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 18:41:20 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:12:30 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	main(int argc, char *argv[])
 	if (!(philo))
 		return (1);
 	init_philo(philo, &data);
-	printf("%ld", philo->meals_last);
 	start_meals(&data, philo);
 	free(data.forks);
 	free(philo);

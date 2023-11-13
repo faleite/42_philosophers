@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:10:50 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/12 19:13:20 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:34:43 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->data->nphilos == 1)
+		error_case(philo->data, "UM PHILO");
 	// FCT PARA APENAS UM PHILO 
 	// loop infinito da routine (var dead p se alguem morrer)...
 	while (philo->meals_nbr != 0)
@@ -63,20 +65,29 @@ void	start_meals(t_data *data, t_philo *philo)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	// init mutex p/ msg, meals, threads and forks;
 	if (init_forks(data))
 		return ;
 	data->time_philos = get_curr_time();
-	while (i++ < data->nphilos)
-		pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
-	i = 0;
 	while (i < data->nphilos)
+	{
+		pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
+		i++;
+	}
+	i = 0;	
+	while (i < data->nphilos)
+	{
 		pthread_join(philo[i++].thread, NULL);
+		i++;
+	}
 	pthread_mutex_destroy(&data->mutex_msg);
 	pthread_mutex_destroy(&data->mutex_eat);
 	pthread_mutex_destroy(&data->mutex_end);
 	i = 0;
 	while (i < data->nphilos)
-		pthread_mutex_destroy(&data->forks[i++].mutex);
+	{
+		pthread_mutex_destroy(&data->forks[i].mutex);
+		i++;
+	}
 }

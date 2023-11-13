@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 21:01:08 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/11 19:18:23 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:01:06 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	give_off_forks(t_philo *philo)
 
 	first = philo->first_fork;
 	second = philo->second_fork;
-	if (philo->id % 2)
+	if (!(philo->id % 2))
 	{
 		pthread_mutex_lock(&philo->data->forks[first].mutex);
 		pthread_mutex_lock(&philo->data->forks[second].mutex);
@@ -78,6 +78,14 @@ void	unlock_forks(t_philo *philo, int value)
 	second = philo->second_fork;
 	philo->data->forks[first].usable = value;
 	philo->data->forks[second].usable = value;
-	pthread_mutex_unlock(&philo->data->forks[first].mutex);
-	pthread_mutex_unlock(&philo->data->forks[second].mutex);
+	if (philo->id % 2)
+	{
+		pthread_mutex_unlock(&philo->data->forks[first].mutex);
+		pthread_mutex_unlock(&philo->data->forks[second].mutex);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->data->forks[second].mutex);
+		pthread_mutex_unlock(&philo->data->forks[first].mutex);
+	}
 }
