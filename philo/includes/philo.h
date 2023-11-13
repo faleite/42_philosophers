@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 19:37:31 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/13 20:58:43 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,11 @@ typedef struct s_philo
 struct s_data
 {
 	int				nphilos;
-	size_t			time_die;
 	int				time_eat;
 	int				time_sleep;
 	int				ntimes_eat;
 	bool			end_philo;
-	bool			start_philos;
+	size_t			time_die;
 	size_t			time_philos;
 	pthread_mutex_t	mutex_msg;
 	pthread_mutex_t	mutex_end;
@@ -94,8 +93,9 @@ struct s_data
 /* Utils */
 int			error_case(t_data *data, char *msg);
 int			check_int_max(char **argv);
-long int	ft_atol(const char *str);
+void		msg_routine(t_philo *philo, char *msg);
 size_t		get_curr_time(void);
+long int	ft_atol(const char *str);
 
 /* Parsing */
 int			take_arg(int argc, char **argv);
@@ -104,10 +104,13 @@ int			init_forks(t_data *data);
 void		init_philo(t_philo *philo, t_data *data);
 
 /* Actions */
-void		msg_routine(t_philo *philo, char *msg);
 void		philo_eat(t_philo *philo);
 void		philo_think(t_philo *philo);
 void		philo_sleep(t_philo *philo);
+void		*routine(void *arg);
+
+/* Table */
+void		start_meals(t_data *data, t_philo *philo);
 void		unlock_forks(t_philo *philo, int value);
 void		give_off_forks(t_philo *philo);
 void		lifetime_of_philo(t_philo *philo, size_t time);
@@ -115,7 +118,5 @@ int			odd_even(t_philo *philo, int first_fork, int second_fork);
 int			not_usable(t_philo *philo, int fork);
 int			give_me_forks(t_philo *philo);
 int			philo_end(t_philo *philo);
-void		*routine(void *arg);
-void		start_meals(t_data *data, t_philo *philo);
 
 #endif /* PHILO_H */
