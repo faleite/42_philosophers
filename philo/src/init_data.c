@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 20:03:11 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:37:56 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,6 @@ int	put_arg(t_data *data, char **argv)
 
 /**
  * @brief How the philo take the forks
- * @param second_fork = [philo_position + 1] % nphilo 
-*/
-int	init_forks(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	if (pthread_mutex_init(&data->mutex_msg, NULL))
-		return (1);
-	if (pthread_mutex_init(&data->mutex_end, NULL))
-		return (2);
-	data->forks = malloc(sizeof(t_fork) * data->nphilos);
-	if (!(data->forks))
-		return (3);
-	while (i < data->nphilos)
-	{
-		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
-			return (4);
-		data->forks[i].usable = 1;
-		i++;
-	}
-	return (0);
-}
-
-/**
- * @brief How the philo take the forks
  * @param pos position in the table
  * @param second_fork = [philo_position + 1] % nphilo
 */
@@ -80,16 +54,34 @@ void	init_philo(t_philo *philo, t_data *data)
 		philo[pos].status = THINK;
 		philo[pos].data = data;
 		philo[pos].meals_last = get_curr_time();
-		if (philo->id % 2)
-		{
-			philo[pos].first_fork = philo[pos].id - 1;
-			philo[pos].second_fork = (philo[pos].id) % data->nphilos;
-		}
-		else
-		{
-			philo[pos].first_fork = (philo[pos].id) % data->nphilos;
-			philo[pos].second_fork = philo[pos].id - 1;
-		}
+		philo[pos].first_fork = philo[pos].id - 1;
+		philo[pos].second_fork = (philo[pos].id) % data->nphilos;
 		pos++;
 	}
+}
+
+/**
+ * @brief How the philo take the forks
+ * @param second_fork = [philo_position + 1] % nphilo 
+*/
+int	init_forks(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (pthread_mutex_init(&data->mutex_msg, NULL))
+	 	return (1);
+	if (pthread_mutex_init(&data->mutex_end, NULL))
+	 	return (2);
+	data->forks = malloc(sizeof(t_fork) * data->nphilos);
+	if (!(data->forks))
+		return (3);
+	while (i < data->nphilos)
+	{
+		if (pthread_mutex_init(&data->forks[i].mutex, NULL))
+			return (4);
+		data->forks[i].usable = 1;
+		i++;
+	}
+	return (0);
 }

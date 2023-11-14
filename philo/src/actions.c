@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 20:47:53 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 19:25:08 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:43:50 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@ void	philo_eat(t_philo *philo)
 {
 	if (give_me_forks(philo))
 		return ;
-	// Talvez deva usar um mutex_lock aqui
 	philo->meals_last = get_curr_time();
 	philo->status = EAT;
 	philo->meals_nbr--;
-	// Talvez deva usar um mutex_unlock aqui
 	msg_routine(philo, "is eating");
 	lifetime_of_philo(philo, philo->data->time_eat);
 	give_off_forks(philo);
@@ -68,6 +66,6 @@ void	lifetime_of_philo(t_philo *philo, size_t time)
 	{
 		if (philo_end(philo))
 			return ;
-		usleep(10); // Se necessario faça ft_usleep
+		usleep(10);
 	}
 }

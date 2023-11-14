@@ -6,11 +6,13 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:10:50 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 19:49:23 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:44:00 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+static void	one_philo(t_philo *philo);
 
 void	start_meals(t_data *data, t_philo *philo)
 {
@@ -41,10 +43,8 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// FCT PARA APENAS UM PHILO 
 	if (philo->data->nphilos == 1)
-		error_case(philo->data, "UM PHILO");
-	// loop infinito da routine (var dead p se alguem morrer)...
+		one_philo(philo);
 	while (philo->meals_nbr != 0)
 	{
 		pthread_mutex_lock(&philo->data->mutex_end);
@@ -64,4 +64,10 @@ void	*routine(void *arg)
 			philo_think(philo);
 	}
 	return (NULL);
+}
+
+static void	one_philo(t_philo *philo)
+{
+	msg_routine(philo, "is thinking");
+	usleep(philo->data->time_die);
 }

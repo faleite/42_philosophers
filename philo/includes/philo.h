@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 20:58:43 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:36:22 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <stdbool.h> // type bool
 # include <limits.h> // INT_MAX
 # include <string.h> // memset
-# include <errno.h> // macro status errors for threads 
 
 /* Operation code */
 typedef enum e_status
@@ -90,6 +89,9 @@ struct s_data
 	t_philo			*philo;
 };
 
+/* TESTE */
+int	ft_usleep(size_t milliseconds);
+
 /* Utils */
 int			error_case(t_data *data, char *msg);
 int			check_int_max(char **argv);
@@ -110,13 +112,13 @@ void		philo_sleep(t_philo *philo);
 void		*routine(void *arg);
 
 /* Table */
-void		start_meals(t_data *data, t_philo *philo);
-void		unlock_forks(t_philo *philo, int value);
-void		give_off_forks(t_philo *philo);
-void		lifetime_of_philo(t_philo *philo, size_t time);
 int			odd_even(t_philo *philo, int first_fork, int second_fork);
 int			not_usable(t_philo *philo, int fork);
 int			give_me_forks(t_philo *philo);
 int			philo_end(t_philo *philo);
+void		start_meals(t_data *data, t_philo *philo);
+void		unlock_forks(t_philo *philo, int value);
+void		give_off_forks(t_philo *philo);
+void		lifetime_of_philo(t_philo *philo, size_t time);
 
 #endif /* PHILO_H */

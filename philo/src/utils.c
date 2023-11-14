@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/13 19:14:43 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/14 21:36:17 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ int	error_case(t_data *data, char *msg)
 	return (1);
 }
 
+int	not_usable(t_philo *philo, int fork)
+{
+	pthread_mutex_unlock(&philo->data->forks[fork].mutex);
+	if (philo->status != THINK)
+		msg_routine(philo, "is thinking");
+	philo->status = THINK;
+	return (1);
+}
+
 size_t	get_curr_time(void)
 {
 	struct timeval	time;
@@ -39,11 +48,13 @@ size_t	get_curr_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-int	not_usable(t_philo *philo, int fork)
+// Version of the sleep function a little better
+int	ft_usleep(size_t milliseconds)
 {
-	pthread_mutex_unlock(&philo->data->forks[fork].mutex);
-	if (philo->status != THINK)
-		msg_routine(philo, "is thinking");
-	philo->status = THINK;
-	return (1);
+	size_t	start;
+
+	start = get_curr_time();
+	while ((get_curr_time() - start) < milliseconds)
+		usleep(100);
+	return (0);
 }
