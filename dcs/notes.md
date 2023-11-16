@@ -20,6 +20,28 @@
 
 ### Problems:
 - **Deadlock** (impasse) - each of the philosophers pick up a fork, no one can eat, hence, a deadlock.\
+O deadlock é uma situação indesejada em sistemas concorrentes em que duas ou mais threads (ou processos) ficam bloqueadas, aguardando uns aos outros para liberar recursos. Isso cria uma condição de impasse, onde nenhum dos threads pode prosseguir, resultando na paralisação do sistema. O deadlock geralmente envolve a competição por recursos finitos, como mutexes, semáforos ou recursos compartilhados.
+
+Os deadlocks ocorrem quando quatro condições necessárias estão presentes simultaneamente. Essas condições são conhecidas como as quatro condições de Coffman, que são:
+
+1. **Mutual Exclusion (Exclusão Mútua):** Pelo menos um recurso deve ser mantido em um estado exclusivo, o que significa que apenas um thread pode acessá-lo por vez.
+
+2. **Hold and Wait (Aguardar e Manter):** Um thread que já possui recursos pode solicitar novos recursos sem liberar os que já possui.
+
+3. **No Preemption (Não Preempção):** Recursos não podem ser retirados à força de um thread; eles só podem ser liberados voluntariamente.
+
+4. **Circular Wait (Aguardar Circular):** Existe um conjunto de threads, cada uma delas está aguardando um recurso detido por outra thread no conjunto.
+
+Quando essas quatro condições são satisfeitas simultaneamente, um deadlock pode ocorrer. Aqui está um exemplo simplificado de como um deadlock pode ocorrer:
+
+1. Thread A adquire o recurso X.
+2. Thread B adquire o recurso Y.
+3. Thread A agora precisa do recurso Y, que é mantido por Thread B.
+4. Thread B agora precisa do recurso X, que é mantido por Thread A.
+
+Neste ponto, ambos os threads estão aguardando que o outro libere o recurso que precisa, criando um ciclo de espera circular, o que é a condição para o deadlock.
+
+Prevenir deadlocks geralmente envolve estratégias como a ordenação de recursos, evitando aguardar por recursos enquanto mantém outros, usando técnicas de exclusão mútua eficientes, entre outras abordagens de design de software e sistemas concorrentes. O entendimento das condições de deadlock e a aplicação de boas práticas de programação e design de sistemas são essenciais para minimizar a ocorrência de deadlocks.
 - **Starvation** (inanição - a fome)\
 if a philosofer is not able to eat for a long period of time, the said philosopher may die of starvation.
 
@@ -615,4 +637,34 @@ void *computation(void *add)
 //
 //          Parallel Execution 
 ```
+
+### gettimeofday()
+
+A função `get_curr_time` retorna o tempo atual em milissegundos desde o Epoch (00:00:00 UTC, 1 de janeiro de 1970), utilizando a função `gettimeofday` da biblioteca POSIX para obter o tempo em **microssegundos** e, em seguida, convertendo-o para **milissegundos**.
+
+Aqui estão os detalhes da função:
+
+```c
+size_t get_curr_time(void)
+{
+    struct timeval time;
+
+    // Obtém o tempo atual em microssegundos
+    if (gettimeofday(&time, NULL) != 0) {
+        // Em caso de erro ao obter o tempo, imprime uma mensagem de erro
+        printf("Error\n gettimeofday()\n");
+    }
+
+    // Converte o tempo para milissegundos e retorna o resultado
+    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+```
+
+- **`struct timeval time;`:** Declaração de uma estrutura `timeval` que é usada para armazenar o tempo atual, incluindo segundos e microssegundos.
+
+- **`if (gettimeofday(&time, NULL) != 0) { ... }`:** A função `gettimeofday` é chamada para obter o tempo atual. Se a chamada retornar um valor diferente de zero, indica que ocorreu um erro. Nesse caso, uma mensagem de erro é impressa.
+
+- **`return ((time.tv_sec * 1000) + (time.tv_usec / 1000));`:** Converte o tempo obtido para milissegundos. `time.tv_sec` contém os segundos e `time.tv_usec` contém os microssegundos. A soma `(time.tv_sec * 1000) + (time.tv_usec / 1000)` fornece o tempo total em milissegundos, que é então retornado pela função.
+
+Essa função é útil para obter marcas de tempo em milissegundos, que podem ser usadas, por exemplo, para medir o tempo de execução de certas operações ou para sincronizar eventos em um programa.\
 [↑ Index ↑](#top)

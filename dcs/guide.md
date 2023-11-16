@@ -1,4 +1,8 @@
 # THREADS
+***A thread is a basic unit of CPU utilization***\
+(*Um thread é uma unidade básica de utilização da CPU*)
+
+
 *Uma thread, em termos simples, é uma sequência de execução em um programa. É uma unidade básica de processamento que compartilha recursos, como memória, com outras threads dentro do mesmo processo. As threads permitem a execução concorrente de tarefas em um programa, facilitando a realização de operações simultâneas e melhorando a eficiência em sistemas multiprocessadores. Cada thread em um processo tem seu próprio conjunto de registradores e um ponteiro de instruções, mas compartilha o mesmo espaço de endereço e outros recursos com as demais threads do mesmo processo.*
 ## Data Races (Race Conditions) — What Are They?
 Corridas de dados são um problema comum na programação multithread. As corridas de dados ocorrem quando múltiplas tarefas ou threads acessam um recurso compartilhado sem proteções suficientes, levando a um comportamento indefinido ou imprevisível.
