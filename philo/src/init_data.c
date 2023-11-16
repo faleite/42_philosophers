@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 14:30:45 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/14 21:37:56 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:18:50 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ int	put_arg(t_data *data, char **argv)
 		|| data->time_eat < 60
 		|| data->time_sleep < 60)
 		return (2);
+	data->philo = malloc(sizeof(t_philo) * (data->nphilos));
+	if (!(data->philo))
+		return (3);
 	return (0);
 }
 
@@ -42,20 +45,20 @@ int	put_arg(t_data *data, char **argv)
  * @param pos position in the table
  * @param second_fork = [philo_position + 1] % nphilo
 */
-void	init_philo(t_philo *philo, t_data *data)
+void	init_philo(t_data *data)
 {
 	int		pos;
 
 	pos = 0;
 	while (pos < data->nphilos)
 	{
-		philo[pos].id = pos + 1;
-		philo[pos].meals_nbr = data->ntimes_eat;
-		philo[pos].status = THINK;
-		philo[pos].data = data;
-		philo[pos].meals_last = get_curr_time();
-		philo[pos].first_fork = philo[pos].id - 1;
-		philo[pos].second_fork = (philo[pos].id) % data->nphilos;
+		data->philo[pos].id = pos + 1;
+		data->philo[pos].meals_nbr = data->ntimes_eat;
+		data->philo[pos].status = THINK;
+		data->philo[pos].data = data;
+		data->philo[pos].meals_last = get_curr_time();
+		data->philo[pos].first_fork = data->philo[pos].id - 1;
+		data->philo[pos].second_fork = (data->philo[pos].id) % data->nphilos;
 		pos++;
 	}
 }
@@ -70,9 +73,9 @@ int	init_forks(t_data *data)
 
 	i = 0;
 	if (pthread_mutex_init(&data->mutex_msg, NULL))
-	 	return (1);
+		return (1);
 	if (pthread_mutex_init(&data->mutex_end, NULL))
-	 	return (2);
+		return (2);
 	data->forks = malloc(sizeof(t_fork) * data->nphilos);
 	if (!(data->forks))
 		return (3);

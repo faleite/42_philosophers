@@ -106,3 +106,16 @@ int	join_threads(t_philo *philo)
 	return (0);
 }
 ```
+
+### Version of the sleep function a little better
+```c
+int	ft_usleep(size_t milliseconds)
+{
+	size_t	start;
+
+	start = get_curr_time();
+	while ((get_curr_time() - start) < milliseconds)
+		usleep(100);
+	return (0);
+}
+```

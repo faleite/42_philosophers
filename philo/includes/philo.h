@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 13:48:59 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/14 21:36:22 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:07:14 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,26 @@
 # include <stdlib.h> // malloc, free
 # include <unistd.h> // write, usleep
 # include <sys/time.h> // gettimeofday
-# include <pthread.h> // pthread_create, pthread_detach, pthread_join
+# include <pthread.h> // pthread_create, pthread_join
 # include <stdbool.h> // type bool
 # include <limits.h> // INT_MAX
-# include <string.h> // memset
+
+/* structures */
+
+/**
+ * @name DATA
+ * @brief ./philo 5 800 200 200 [5]
+ * @param nphilos 5
+ * @param time_die 800
+ * @param time_eat 200
+ * @param time_sleep 200
+ * @param ntimes_eat [5] | Use flag (if -1) dont have argument
+ * @param init_philos Start simulation of the philosophers
+ * @param end_philos A philo dies or all philos full
+ * @param forks array of FORKS
+ * @param philos array of PHILOS
+*/
+typedef struct s_data	t_data;
 
 /* Operation code */
 typedef enum e_status
@@ -30,9 +46,6 @@ typedef enum e_status
 	SLEEP,
 	DEAD
 }			t_status;
-
-/* structures */
-typedef struct s_data	t_data;
 
 /**
  * @brief FORK
@@ -61,19 +74,6 @@ typedef struct s_philo
 	t_data		*data;
 }				t_philo;
 
-/**
- * @name DATA
- * @brief ./philo 5 800 200 200 [5]
- * @param nphilos 5
- * @param time_die 800
- * @param time_eat 200
- * @param time_sleep 200
- * @param ntimes_eat [5] | Use flag (if -1) dont have argument
- * @param init_philos Start simulation of the philosophers
- * @param end_philos A philo dies or all philos full
- * @param forks array of FORKS
- * @param philos array of PHILOS
-*/
 struct s_data
 {
 	int				nphilos;
@@ -89,9 +89,6 @@ struct s_data
 	t_philo			*philo;
 };
 
-/* TESTE */
-int	ft_usleep(size_t milliseconds);
-
 /* Utils */
 int			error_case(t_data *data, char *msg);
 int			check_int_max(char **argv);
@@ -103,7 +100,7 @@ long int	ft_atol(const char *str);
 int			take_arg(int argc, char **argv);
 int			put_arg(t_data *data, char **argv);
 int			init_forks(t_data *data);
-void		init_philo(t_philo *philo, t_data *data);
+void		init_philo(t_data *data);
 
 /* Actions */
 void		philo_eat(t_philo *philo);
@@ -116,7 +113,7 @@ int			odd_even(t_philo *philo, int first_fork, int second_fork);
 int			not_usable(t_philo *philo, int fork);
 int			give_me_forks(t_philo *philo);
 int			philo_end(t_philo *philo);
-void		start_meals(t_data *data, t_philo *philo);
+void		start_meals(t_data *data);
 void		unlock_forks(t_philo *philo, int value);
 void		give_off_forks(t_philo *philo);
 void		lifetime_of_philo(t_philo *philo, size_t time);

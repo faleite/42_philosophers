@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 13:55:38 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/14 21:36:17 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:06:15 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,4 @@ size_t	get_curr_time(void)
 	if (gettimeofday(&time, NULL) != 0)
 		printf("Error\n gettimeofday()\n");
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-// Version of the sleep function a little better
-int	ft_usleep(size_t milliseconds)
-{
-	size_t	start;
-
-	start = get_curr_time();
-	while ((get_curr_time() - start) < milliseconds)
-		usleep(100);
-	return (0);
 }

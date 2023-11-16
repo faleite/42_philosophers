@@ -6,7 +6,7 @@
 /*   By: faaraujo <faaraujo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 09:10:50 by faaraujo          #+#    #+#             */
-/*   Updated: 2023/11/14 21:44:00 by faaraujo         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:49:44 by faaraujo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	one_philo(t_philo *philo);
 
-void	start_meals(t_data *data, t_philo *philo)
+void	start_meals(t_data *data)
 {
 	int	i;
 
@@ -23,10 +23,10 @@ void	start_meals(t_data *data, t_philo *philo)
 		return ;
 	data->time_philos = get_curr_time();
 	while (++i < data->nphilos)
-		pthread_create(&philo[i].thread, NULL, routine, &philo[i]);
-	i = -1;	
+		pthread_create(&data->philo[i].thread, NULL, routine, &data->philo[i]);
+	i = -1;
 	while (++i < data->nphilos)
-		pthread_join(philo[i].thread, NULL);
+		pthread_join(data->philo[i].thread, NULL);
 	i = -1;
 	pthread_mutex_destroy(&data->mutex_msg);
 	pthread_mutex_destroy(&data->mutex_end);
@@ -69,5 +69,5 @@ void	*routine(void *arg)
 static void	one_philo(t_philo *philo)
 {
 	msg_routine(philo, "is thinking");
-	usleep(philo->data->time_die);
+	usleep(philo->data->time_die * 1000);
 }
