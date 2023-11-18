@@ -87,7 +87,7 @@ int	create_threads(t_philo *philo)
 	i = -1;
 	while (++i < philo->data->nphilos)
 	{
-		if (pthread_create(&philo[i].thread, NULL, &routine, NULL) != 0) // routine sem &
+		if (pthread_create(&philo[i].thread, NULL, &routine, NULL) != 0)
 			return (1);
 	}
 	return (0);
@@ -103,19 +103,6 @@ int	join_threads(t_philo *philo)
 		if (pthread_join(philo[i].thread, NULL) != 0)
 			return (1);
 	}
-	return (0);
-}
-```
-
-### Version of the sleep function a little better
-```c
-int	ft_usleep(size_t milliseconds)
-{
-	size_t	start;
-
-	start = get_curr_time();
-	while ((get_curr_time() - start) < milliseconds)
-		usleep(100);
 	return (0);
 }
 ```
