@@ -8,8 +8,8 @@
 ```
  Skills | Grade |
 :------:|:-----:|
-[**Unix**] [**Rigor**] [**Imperative programming**] | **Subscribed :atom:**
- <!-- **:white_check_mark: 100%** -->
+[**Unix**] [**Rigor**] [**Imperative programming**] | **:white_check_mark: 100%**
+<!-- **Subscribed :atom:** -->
 
 * ### [Introduction](#introduction-1)
 * ### [Overview](#overview-1)
