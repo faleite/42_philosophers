@@ -636,9 +636,9 @@ int main(int argc, char* argv[]) {
 - [Introduction to Threads](https://www.youtube.com/watch?v=LOfGJcVnvAk)
 - [Slides](https://nesoacademy.org/cs/03-operating-system/ppts/04-threads)
 
-[<img align="center" src="./thread1.png" width="60%"/>](/dcs/thread1.png)
-[<img align="center" src="./thread2.png" width="60%"/>](/dcs/thread2.png)
-[<img align="center" src="./thread3.png" width="60%"/>](/dcs/thread3.png)
+[<img align="center" src="./dcs/thread1.png" width="60%"/>](./dcs/thread1.png)
+[<img align="center" src="./dcs/thread2.png" width="60%"/>](./dcs/thread2.png)
+[<img align="center" src="./dcs/thread3.png" width="60%"/>](./dcs/thread3.png)
 
 - [Introduction to Threads](https://www.youtube.com/watch?v=ldJ8WGZVXZk)
 ```c
